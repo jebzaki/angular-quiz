@@ -1,0 +1,46 @@
+<div class="h-lvh flex flex-col">
+  <div class="flex-1 flex justify-center items-center flex-col">
+    <div class="flex justify-center items-center p-4">
+      <a href="https://angular.dev/" target="_blank">
+        <img src="../../../assets/angular.svg" class="logo angular h-32 p-2" alt="Angular logo" />
+      </a>
+    </div>
+
+    <form class="max-w-96 w-full" [formGroup]="quizSetupForm" (ngSubmit)="onSubmit()">
+      <div class="mt-2 px-4 flex flex-col">
+        <label htmlFor="difficulty">Difficulty</label>
+
+        <select class="p-4 rounded" name="difficulty" formControlName="difficulty">
+          @for (option of difficulties; track option) {
+            <option [value]="option">
+              {{ option }}
+            </option>
+          }
+        </select>
+      </div>
+
+      <div class="mt-2 px-4 flex flex-col">
+        <label htmlFor="quizLength">Quiz Length</label>
+
+        <select class="p-4 rounded" name="quizLength" formControlName="quizLength">
+          @for (option of quizLengths; track option) {
+            <option [value]="option">
+              {{ option }}
+            </option>
+          }
+        </select>
+      </div>
+
+      <div class="mt-2 px-4 flex flex-col">
+        <button
+          type="submit"
+          [disabled]="isLoading"
+          class="rounded capitalize p-4 mt-4 w-full bg-green-600 text-white text-2xl transition-opacity disabled:opacity-40">
+          start
+        </button>
+
+        <div class="text-center">{{ errorMessage }}</div>
+      </div>
+    </form>
+  </div>
+</div>
