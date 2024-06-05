@@ -1,9 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { decode } from 'html-entities';
+import { Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
 
-import { Question } from '../../interfaces/question/question';
-import { QuizService } from '../../services/quiz/quiz.service';
+import { Question } from '../../models/question/question';
+import * as QuizActions from '../../store/app.actions';
+import * as QuizSelectors from '../../store/app.selectors';
 
 @Component({
   selector: 'app-question',
@@ -12,32 +15,42 @@ import { QuizService } from '../../services/quiz/quiz.service';
   templateUrl: './questions.component.html',
   styleUrl: './questions.component.css',
 })
-export class QuestionsComponent {
+export class QuestionsComponent implements OnDestroy {
   question: Question = new Question();
   questionNumber: number = 0;
   disableBtns: boolean = false;
 
+  private subscriptions: Subscription = new Subscription();
+
   constructor(
-    private quizService: QuizService,
+    private readonly store: Store,
     private router: Router
   ) {
-    this.question = this.quizService.getQuestion() || this.question;
-    this.questionNumber = this.quizService.getQuestionNumber();
+    this.subscriptions.add(
+      this.store.select(QuizSelectors.selectCurrentQuestion).subscribe(question => {
+        this.question = question;
+      })
+    );
 
-    if (!this.question.question) {
-      this.router.navigate(['/']);
-    }
+    this.subscriptions.add(
+      this.store.select(QuizSelectors.selectCurrentQuestionNumber).subscribe(questionNumber => {
+        this.questionNumber = questionNumber;
+      })
+    );
+
+    this.subscriptions.add(
+      this.store.select(QuizSelectors.selectIsQuizFinished).subscribe(isFinished => {
+        this.disableBtns = isFinished;
+
+        if (isFinished) {
+          this.router.navigate(['/', 'results']);
+        }
+      })
+    );
   }
 
-  ngOnInit(): void {
-    // Subscribe to the boolean observable
-    this.quizService.quizFinished$.subscribe(value => {
-      this.disableBtns = value;
-
-      if (value) {
-        this.router.navigate(['/', 'results']);
-      }
-    });
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 
   decode(text: string): string {
@@ -45,8 +58,10 @@ export class QuestionsComponent {
   }
 
   submitAnswer(answer: boolean): void {
-    this.quizService.nextQuestion(answer);
-    this.question = this.quizService.getQuestion() || this.question;
-    this.questionNumber = this.quizService.getQuestionNumber();
+    this.store.dispatch(
+      QuizActions.quizManagementActions.nextQuestion({
+        answer,
+      })
+    );
   }
 }

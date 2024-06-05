@@ -6,5 +6,5 @@ import { ResultsComponent } from './pages/results/results.component';
 export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'questions', component: QuestionsComponent },
-  { path: 'results', component: ResultsComponent }
+  { path: 'results', component: ResultsComponent },
 ];

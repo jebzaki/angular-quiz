@@ -38,8 +38,9 @@
           class="rounded capitalize p-4 mt-4 w-full bg-green-600 text-white text-2xl transition-opacity disabled:opacity-40">
           start
         </button>
-
-        <div class="text-center">{{ errorMessage }}</div>
+        @if (errorMessage) {
+          <div class="text-center">{{ errorMessage }}</div>
+        }
       </div>
     </form>
   </div>
