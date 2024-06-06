@@ -1,4 +1,5 @@
-import { Component, OnDestroy } from '@angular/core';
+/* eslint-disable @ngrx/no-store-subscription */
+import { Component, HostBinding, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -17,6 +18,9 @@ import { HttpErrorResponse } from '@angular/common/http';
   styleUrl: './home.component.css',
 })
 export class HomeComponent implements OnDestroy {
+  @HostBinding('class')
+  protected readonly classes = 'flex-1 flex justify-center';
+
   quiz: Question[] = [];
 
   difficulties: string[] = ['Easy', 'Medium', 'Hard'];

@@ -10,6 +10,7 @@ import { routes } from './app.routes';
 import { quizReducer } from './store/app.reducers';
 import { QuizEffects } from './store/app.effects';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
   return localStorageSync({ keys: ['quiz'], rehydrate: true, checkStorageAvailability: true })(reducer);
 }

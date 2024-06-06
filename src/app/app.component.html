@@ -1,1 +1,11 @@
-<router-outlet />
+<div class="h-lvh flex flex-col">
+  @if (showHeader) {
+    <app-header></app-header>
+  }
+
+  <div class="flex-1 flex flex-col">
+    <router-outlet />
+
+    <app-footer></app-footer>
+  </div>
+</div>

@@ -1,4 +1,5 @@
-import { Component, Signal, WritableSignal, computed, signal, OnDestroy } from '@angular/core';
+/* eslint-disable @ngrx/no-store-subscription */
+import { Component, Signal, WritableSignal, computed, signal, OnDestroy, HostBinding } from '@angular/core';
 import { decode } from 'html-entities';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -16,6 +17,9 @@ import { Subscription } from 'rxjs';
   styleUrl: './results.component.css',
 })
 export class ResultsComponent implements OnDestroy {
+  @HostBinding('class')
+  protected readonly classes = 'flex-1 flex justify-center';
+
   questions: Question[] = [];
   results: WritableSignal<boolean[]> = signal([]);
   score: Signal<number> = computed(() => {

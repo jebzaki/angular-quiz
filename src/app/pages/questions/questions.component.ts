@@ -1,4 +1,5 @@
-import { Component, OnDestroy } from '@angular/core';
+/* eslint-disable @ngrx/no-store-subscription */
+import { Component, HostBinding, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { decode } from 'html-entities';
 import { Subscription } from 'rxjs';
@@ -16,6 +17,9 @@ import * as QuizSelectors from '../../store/app.selectors';
   styleUrl: './questions.component.css',
 })
 export class QuestionsComponent implements OnDestroy {
+  @HostBinding('class')
+  protected readonly classes = 'flex-1 flex justify-center';
+
   question: Question = new Question();
   questionNumber: number = 0;
   disableBtns: boolean = false;
