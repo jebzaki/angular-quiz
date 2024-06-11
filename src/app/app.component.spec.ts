@@ -1,4 +1,6 @@
 import { TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
@@ -20,10 +22,11 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('angular-quiz');
   });
 
-  it('should render title', () => {
+  it('should render router', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, angular-quiz');
+
+    const routerElement = fixture.debugElement.query(By.css('router-outlet'));
+    expect(routerElement).toBeTruthy();
   });
 });
