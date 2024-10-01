@@ -4,6 +4,7 @@ import { of } from 'rxjs';
 import { map, mergeMap, catchError } from 'rxjs/operators';
 import { QuizService } from '../services/quiz/quiz.service';
 import * as QuizActions from '../store/app.actions';
+import { QuizType } from '../models/quizType/quizType';
 
 @Injectable()
 export class QuizEffects {
@@ -11,10 +12,12 @@ export class QuizEffects {
     return this.actions$.pipe(
       ofType(QuizActions.quizManagementActions.getQuiz),
       mergeMap(action => {
-        return this.quizService.getQuiz(action.difficulty || '', action.quizLength || 10).pipe(
-          map(quizPayload => QuizActions.quizManagementActions.loadQuiz({ questions: quizPayload.results })),
-          catchError(error => of(QuizActions.quizManagementActions.loadQuizFailure({ error })))
-        );
+        return this.quizService
+          .getQuiz(action.difficulty || '', action.quizLength || 10, action.quizType || QuizType.boolean)
+          .pipe(
+            map(quizPayload => QuizActions.quizManagementActions.loadQuiz({ questions: quizPayload.results })),
+            catchError(error => of(QuizActions.quizManagementActions.loadQuizFailure({ error })))
+          );
       })
     );
   });

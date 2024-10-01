@@ -1,6 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
 import * as QuizActions from './app.actions';
 import { QuizState } from '../models/quizState/quizState';
+import { decode } from 'html-entities';
 
 export const initialState: QuizState = {
   questions: [],
@@ -15,7 +16,15 @@ export const quizReducer = createReducer(
   on(QuizActions.quizManagementActions.loadQuiz, (state, { questions }): QuizState => {
     return {
       ...initialState,
-      questions: questions,
+      questions: questions.map(question => {
+        return {
+          ...question,
+          question: decode(question.question),
+          category: decode(question.category),
+          correct_answer: decode(question.correct_answer),
+          incorrect_answers: question.incorrect_answers.map((ans: string) => decode(ans)),
+        };
+      }),
     };
   }),
   on(QuizActions.quizManagementActions.loadQuizFailure, (state, { error }): QuizState => {

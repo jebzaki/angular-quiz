@@ -6,7 +6,7 @@
           <div>
             @for (question of questions; track question; let i = $index) {
               <div class="mb-2">
-                #{{ i + 1 }}, {{ decode(question.question) }}
+                #{{ i + 1 }}, {{ question.question }}
                 <span class="font-semibold">{{ results()[i] ? 'Correct' : 'Incorrect' }}</span>
               </div>
             }

@@ -12,8 +12,7 @@ import { QuizType } from '../../models/quizType/quizType';
 export class QuizService {
   private questions: Question[] = [];
   private currentQuestion: number = 0;
-  private userAnswers: boolean[] = [];
-  private quizType: QuizType = QuizType.boolean;
+  private userAnswers: string[] = [];
   private quizFinishedSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   quizFinished$ = this.quizFinishedSubject.asObservable();
@@ -25,8 +24,7 @@ export class QuizService {
     quizLength: number = 10,
     type: QuizType = QuizType.boolean
   ): Observable<QuizAPIPayload> {
-    this.quizType = type;
-    const typeString = type.toString();
+    const typeString = type.toString().toLocaleLowerCase();
 
     return this.http.get<QuizAPIPayload>(
       `https://opentdb.com/api.php?amount=${quizLength}&difficulty=${difficulty.toLocaleLowerCase()}&type=${typeString}`

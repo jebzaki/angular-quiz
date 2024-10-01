@@ -7,6 +7,7 @@ import { HomeComponent } from './home.component';
 import { initialState as quizState } from '../../store/app.reducers';
 import { QuizState } from '../../models/quizState/quizState';
 import { quizManagementActions } from '../../store/app.actions';
+import { QuizType } from '../../models/quizType/quizType';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -42,6 +43,7 @@ describe('HomeComponent', () => {
       quizManagementActions.getQuiz({
         difficulty: 'Easy',
         quizLength: 10,
+        quizType: QuizType.boolean,
       })
     );
   });

@@ -1,6 +1,5 @@
 /* eslint-disable @ngrx/no-store-subscription */
 import { Component, Signal, WritableSignal, computed, signal, OnDestroy, HostBinding } from '@angular/core';
-import { decode } from 'html-entities';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 
@@ -51,10 +50,6 @@ export class ResultsComponent implements OnDestroy {
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
-  }
-
-  decode(text: string): string {
-    return decode(text);
   }
 
   restartQuiz(): void {

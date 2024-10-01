@@ -28,8 +28,7 @@ export const selectResults = createSelector(selectFeatureQuiz, (state: QuizState
   const results: boolean[] = [];
 
   state.questions.map((q, i) => {
-    const correctAnswer = q.correct_answer === 'True' ? true : false;
-    results.push(correctAnswer === state.userAnswers[i]);
+    results.push(q.correct_answer.toLocaleLowerCase() === state.userAnswers[i].toLocaleLowerCase());
   });
   return results;
 });

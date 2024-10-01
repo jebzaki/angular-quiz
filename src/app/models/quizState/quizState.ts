@@ -4,7 +4,7 @@ import { Question } from '../question/question';
 export interface QuizState {
   questions: Question[];
   currentQuestion: number;
-  userAnswers: boolean[];
+  userAnswers: string[];
   quizFinished: boolean;
   apiError: HttpErrorResponse | null;
 }

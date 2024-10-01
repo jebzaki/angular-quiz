@@ -9,6 +9,7 @@ import { Question } from '../../models/question/question';
 import * as QuizActions from '../../store/app.actions';
 import * as QuizSelectors from '../../store/app.selectors';
 import { HttpErrorResponse } from '@angular/common/http';
+import { getQuizTypeValue, QuizTypeLabel } from '../../models/quizType/quizType';
 
 @Component({
   selector: 'app-home',
@@ -25,6 +26,7 @@ export class HomeComponent implements OnDestroy {
 
   difficulties: string[] = ['Easy', 'Medium', 'Hard'];
   quizLengths: number[] = [10, 20, 30];
+  quizTypes: [string, string][] = Object.entries(QuizTypeLabel);
 
   isLoading: boolean = false;
   errorMessage: string = '';
@@ -34,6 +36,7 @@ export class HomeComponent implements OnDestroy {
   quizSetupForm = this.formBuilder.group({
     difficulty: [this.difficulties[0], Validators.required],
     quizLength: [this.quizLengths[0], Validators.required],
+    quizType: [this.quizTypes[0][0], Validators.required],
   });
 
   constructor(
@@ -54,8 +57,8 @@ export class HomeComponent implements OnDestroy {
 
         if (questions.length > 0) {
           this.router.navigate(['/', 'questions']);
-          this.quizSetupForm.value.difficulty = this.difficulties[0];
-          this.quizSetupForm.value.quizLength = this.quizLengths[0];
+
+          this.resetForm();
         }
       })
     );
@@ -71,7 +74,14 @@ export class HomeComponent implements OnDestroy {
       QuizActions.quizManagementActions.getQuiz({
         difficulty: this.quizSetupForm.value.difficulty,
         quizLength: this.quizSetupForm.value.quizLength,
+        quizType: getQuizTypeValue(this.quizSetupForm.value.quizType),
       })
     );
+  }
+
+  resetForm(): void {
+    this.quizSetupForm.value.difficulty = this.difficulties[0];
+    this.quizSetupForm.value.quizLength = this.quizLengths[0];
+    this.quizSetupForm.value.quizType = this.quizTypes[0][0];
   }
 }
